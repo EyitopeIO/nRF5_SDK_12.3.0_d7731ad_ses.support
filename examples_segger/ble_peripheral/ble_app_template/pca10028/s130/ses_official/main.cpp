@@ -1,6 +1,7 @@
 #include "peripherals.h"
-#include "adafruit_control.h"
+#include "view_control.h"
 #include "witmotion_control.h"
+#include "adafruit_control.h"
 #include "nrf_log_ctrl.h"
 #include "app_error.h"
 #include "nordic.h"
@@ -37,6 +38,7 @@ void main_loop_forever( void )
     int status = wit_check_data_ready();
     if ( status == WIT_DATA_READY ) {
       main_data = wit_read_data();
+      view_update(main_data);
       // show_data();
       // show_stats(); 
     }
@@ -51,9 +53,9 @@ int main( void )
 {
     board_begin();
 
-    // TODO: Move to `adafruit_init'
-    pp_spi_init();
+    pp_spi_init(); // todo: move to view_init()
     adafruit_init();
+    view_init();
 
     witmotion_init( 1 );
     main_loop_forever();
