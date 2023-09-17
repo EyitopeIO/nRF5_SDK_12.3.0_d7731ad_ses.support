@@ -22,8 +22,8 @@
     <ProgramSection alignment="4" load="No" keep="Yes" name=".fs_data_run" address_symbol="__start_fs_data"  end_symbol="__stop_fs_data" />
     <ProgramSection alignment="4" load="No" name=".bss" />
     <ProgramSection alignment="4" load="No" name=".tbss" />
-    <ProgramSection alignment="4" load="No" name=".non_init" />
-    <ProgramSection alignment="4" size="__HEAPSIZE__" load="No" name=".heap" />
+    <ProgramSection alignment="4" load="No" name=".non_init" /> 
+    <ProgramSection alignment="4" size="((__RAM_segment_end__ - __STACKSIZE__) - __heap_load_start__)" load="No" name=".heap" />
     <ProgramSection alignment="8" size="__STACKSIZE__" load="No" place_from_segment_end="Yes" name=".stack" />
     <ProgramSection alignment="8" size="__STACKSIZE_PROCESS__" load="No" name=".stack_process" />
   </MemorySegment>
