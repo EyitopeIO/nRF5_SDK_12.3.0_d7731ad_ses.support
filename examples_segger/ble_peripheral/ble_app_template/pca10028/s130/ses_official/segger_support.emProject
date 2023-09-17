@@ -87,9 +87,17 @@
       <file file_name="nordic3.c">
         <configuration Name="Debug" build_exclude_from_build="Yes" />
       </file>
+      <file file_name="page.cpp" />
+      <file file_name="page.hpp" />
       <file file_name="peripherals.c" />
       <file file_name="peripherals.h" />
       <file file_name="sdk_config.h" />
+      <file file_name="user_views.cpp" />
+      <file file_name="user_views.hpp" />
+      <file file_name="view.cpp" />
+      <file file_name="view.hpp" />
+      <file file_name="view_control.cpp" />
+      <file file_name="view_control.h" />
       <file file_name="witmotion_control.c" />
       <file file_name="witmotion_control.h" />
     </folder>
