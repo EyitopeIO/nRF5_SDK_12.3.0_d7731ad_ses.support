@@ -13,10 +13,10 @@ enum user_views {
   VIEW_3_ANGLE_ONLY
 };
 
-typedef struct page_info_t {
+typedef struct {
   void* current_view_object;
   user_views current_view_type;
-};
+} page_info_t;
  
 
 #ifdef __cplusplus
