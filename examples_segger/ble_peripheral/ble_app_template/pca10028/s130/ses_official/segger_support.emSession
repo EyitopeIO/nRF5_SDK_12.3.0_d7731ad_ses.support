@@ -3,6 +3,8 @@
  <Bookmarks/>
  <Breakpoints groups="Breakpoints" active_group="Breakpoints">
   <BreakpointListItem trigger="" line="35" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../../../../../../components/ble/ble_advertising/ble_advertising.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="48" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="main.cpp" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="15" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="view_control.cpp" useHWbreakpoint="false"/>
   <BreakpointListItem trigger="" line="165" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="wit_c_sdk.c" useHWbreakpoint="false"/>
  </Breakpoints>
  <ExecutionProfileWindow/>
@@ -36,6 +38,7 @@
   <ProjectSessionItem path="segger_support;segger_support;Application;adafruit"/>
   <ProjectSessionItem path="segger_support;segger_support;Application;witmotion"/>
   <ProjectSessionItem path="segger_support;segger_support;Board Definition"/>
+  <ProjectSessionItem path="segger_support;segger_support;Internal Files"/>
   <ProjectSessionItem path="segger_support;segger_support;nRF_Drivers"/>
   <ProjectSessionItem path="segger_support;segger_support;nRF_Libraries"/>
   <ProjectSessionItem path="segger_support;segger_support;nRF_Segger_RTT"/>
@@ -44,7 +47,7 @@
  <Register1>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="ble_app_template_pca10028_s130" decimalNodes="" octalNodes="" unsignedNodes=""/>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="segger_support" decimalNodes="" octalNodes="" unsignedNodes=""/>
-  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;UART0/TASKS_STARTRX;UART0/TASKS_STOPRX;UART0/TASKS_STARTTX;UART0/TASKS_STOPTX;UART0/TASKS_SUSPEND;UART0/EVENTS_CTS;UART0/EVENTS_NCTS;UART0/EVENTS_RXDRDY;UART0/EVENTS_TXDRDY;UART0/EVENTS_ERROR;UART0/EVENTS_RXTO;UART0/SHORTS;UART0/INTENSET;UART0/INTENCLR;UART0/ERRORSRC;UART0/ENABLE;UART0/PSELRTS;UART0/PSELTXD;UART0/PSELCTS;UART0/PSELRXD;UART0/RXD;UART0/TXD;UART0/BAUDRATE;UART0/CONFIG;UART0/POWER" binaryNodes="" asciiNodes="" openNodes="UART0;UART0/RXD;UART0/TXD" name="segger_support_Debug" decimalNodes="" octalNodes="" unsignedNodes=""/>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="segger_support_Debug" decimalNodes="" octalNodes="" unsignedNodes=""/>
  </Register1>
  <Register2>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="ble_app_template_pca10028_s130" decimalNodes="" octalNodes="" unsignedNodes=""/>
@@ -82,25 +85,17 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="87" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/nordic.c" path="../../../../../../components/boards/custom_board.h" left="0" top="54" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="19" y="5" useTextEdit="1" folds0="50" path="main.cpp" left="0" top="30" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="27" y="9" useTextEdit="1" path="common.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="45" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/components/libraries/bsp/bsp.c" path="../../../../../../components/boards/boards.h" left="0" top="45" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="140" useTextEdit="1" path="../../../../../../components/boards/boards.c" left="3" top="125" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="12" y="117" useTextEdit="1" folds0="84" path="nordic.c" left="0" top="117" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="14" y="125" useTextEdit="1" folds0="137" path="pcdtest.cpp" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="52" useTextEdit="1" path="main.cpp" left="0" selected="1" top="42" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="28" useTextEdit="1" path="adafruit_control.cpp" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="172" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/pcdtest.cpp" folds0="107,141,152,174,192,199,300,338,387,413,477,482,494" path="PCD8544.cpp" left="0" selected="1" top="134" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="53" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/PCD8544.cpp" path="PCD8544.h" left="0" top="45" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="15" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/adafruit_control.cpp" path="peripherals.c" left="0" top="6" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="52" y="393" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/peripherals.c" path="../../../../../../components/toolchain/cmsis/include/cmsis_gcc.h" left="0" top="353" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="11" y="342" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/peripherals.c" path="../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.c" left="0" top="329" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="96" useTextEdit="1" openedFrom="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/peripherals.c" path="../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.h" left="0" top="87" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5" useTextEdit="1" path="adafruit_control.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="166" useTextEdit="1" path="../../../../../../components/drivers_nrf/delay/nrf_delay.h" left="0" top="138" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="140" useTextEdit="1" path="../../../../../../components/libraries/util/app_error.c" left="0" top="107" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="7" useTextEdit="1" path="page.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="73" useTextEdit="1" path="witmotion_control.c" left="0" top="81" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="73" useTextEdit="1" path="witmotion_control.c" left="0" top="73" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="11" useTextEdit="1" path="view_control.cpp" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="11" useTextEdit="1" path="view_control.h" left="0" top="3" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="user_views.cpp" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="user_views.hpp" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="view.cpp" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="view.hpp" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="364" useTextEdit="1" path="../../../../../../components/toolchain/embedded_studio/thumb_crt0.s" left="0" top="364" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="segger_support" fileDialogDefaultFilter="*.c" autoConnectTarget="GDB Server" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/components/libraries/fifo" debugSearchPath="" autoConnectCapabilities="1343"/>
 </session>

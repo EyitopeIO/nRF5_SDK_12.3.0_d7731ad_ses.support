@@ -7,17 +7,6 @@ extern "C" {
 
 #include <witmotion_control.h>
 
-enum user_views {
-  VIEW_1_ACCELERATION_ONLY,
-  VIEW_2_ANGULARVELOCITY_ONLY,
-  VIEW_3_ANGLE_ONLY
-};
-
-typedef struct {
-  void* current_view_object;
-  user_views current_view_type;
-} page_info_t;
- 
 
 #ifdef __cplusplus
 }
@@ -25,5 +14,5 @@ typedef struct {
 #endif
 
 
-void view_init( void );
-void view_update ( witmotion_data *data );
+void initialise_view(void);
+void update_information(witmotion_data *data);

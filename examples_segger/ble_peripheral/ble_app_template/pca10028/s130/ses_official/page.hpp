@@ -1,31 +1,24 @@
 #ifndef _PAGE_HPP_
 #define _PAGE_HPP_
 
+#include <cstdint>
 
-enum page_types {
+
+enum page_t {
   TEXT_ONLY_PAGE
 };
 
 
-class BasePage {
+typedef struct {
+  const page_types page_type;
+  void *previous_page;
+} BasePage_t;
 
-  protected:
-    page_types page_t;
-};
 
-
-class TextOnlyPage: public BasePage {
-  
-  public:
-    TextOnlyPage(const char *const text);
-    TextOnlyPage();
-    ~TextOnlyPage();
-    const char *const get_static_text(void);
-
-  protected:
-    const char* static_text;
-};
-
+typedef struct {
+  const char *const text;
+  const BasePage_t basepage;
+} SimpleTextPage_t;   
 
 
 /* **************************************************************************/
