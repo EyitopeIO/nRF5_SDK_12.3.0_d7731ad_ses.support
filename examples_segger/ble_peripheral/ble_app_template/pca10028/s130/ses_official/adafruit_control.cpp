@@ -32,6 +32,12 @@ void adafruit_longwrite (uint8_t *c, uint16_t len)
   spi_write(c, len);
 }
 
+void adafruit_print(const char *c, uint16_t len, int x, int y)
+{
+  nokia.print(c, x, y);
+  nokia.display();
+}
+
 void adafruit_print( char c )
 {
   app_uart_put(c);

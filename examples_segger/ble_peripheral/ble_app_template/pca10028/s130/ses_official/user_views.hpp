@@ -3,26 +3,14 @@
 
 
 /*
-* Represents the actual customisable user content that is displayed on the
-* screen, and how the content logically connects to other menus This is the user defines
-* logic for the
+* This enum must match the order in `user_view' array in `user_view.cpp'
 */
-
-
-#include "view.hpp"
-#include "page.hpp"
-
-
-class User_View_1 : public GenericUserView {
-
-  public:
-    User_View_1();
-    ~User_View_1();
-    void update_information(float x, float y, float z);
-
-  private:
-    TextOnlyPage text_page_object;
+enum user_views {
+  VIEW_1_ACCELERATION_ONLY = 0,
+  VIEW_2_ANGLE_ONLY,
+  VIEW_3_ANGULARVELOCITY_ONLY,
 };
+
 
 
 #endif

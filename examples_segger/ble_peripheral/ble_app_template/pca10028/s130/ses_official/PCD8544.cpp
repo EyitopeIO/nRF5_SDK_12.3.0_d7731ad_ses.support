@@ -197,6 +197,12 @@ void PCD8544::print(const uint8_t *str) {
   for(int i=0; i<n; i++) write(*(c+i));
 }
 
+void PCD8544::print(const char *str, int x, int y) {
+  this->setCursor(x, y);
+  print(str);
+}
+
+
 void PCD8544::print(const char *str) {
   print( const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str)));
 }

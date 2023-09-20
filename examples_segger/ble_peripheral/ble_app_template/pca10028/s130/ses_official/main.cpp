@@ -38,7 +38,7 @@ void main_loop_forever( void )
     int status = wit_check_data_ready();
     if ( status == WIT_DATA_READY ) {
       main_data = wit_read_data();
-      view_update(main_data);
+      update_information(main_data);
       // show_data();
       // show_stats(); 
     }
@@ -55,7 +55,7 @@ int main( void )
 
     pp_spi_init(); // todo: move to view_init()
     adafruit_init();
-    view_init();
+    initialise_view();
 
     witmotion_init( 1 );
     main_loop_forever();

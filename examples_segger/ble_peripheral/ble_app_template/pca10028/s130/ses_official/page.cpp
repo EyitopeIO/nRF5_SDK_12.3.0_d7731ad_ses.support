@@ -1,17 +1,11 @@
 #include "page.hpp"
-#include <string>
-#include <cstdlib>
-#include <cstddef>
-#include <cstring>
 
-TextOnlyPage::TextOnlyPage(const char* text) {
-  this->static_text = text;
+void TextPage_init(SimpleTextPage_t *textpage, const char *const text) {
+  if (textpage == nullptr || text == nullptr)
+    return;
+
+  textpage->text=text;
 }
 
-TextOnlyPage::TextOnlyPage() {};
 
-TextOnlyPage::~TextOnlyPage() {}; 
 
-const char *const TextOnlyPage::get_static_text(void) {
-  return this->static_text;
-}
