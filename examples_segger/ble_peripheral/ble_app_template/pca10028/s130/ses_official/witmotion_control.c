@@ -65,7 +65,9 @@ void wit_make_data_request( void )
   wit_evt.s_cDataUpdate = 0;
   wit_evt.total_requests += 1;
   wit_evt.request_timeout = 0;
-  WitReadReg(AX, 12);
+
+  WitReadReg(AX, 12); // read 12 registers starting from AX
+
   //app_timer_start(witmotion_polling_id,
   //                            APP_TIMER_TICKS(WIT_DATA_REQUEST_TIMEOUT,0),
   //                            NULL);
@@ -147,7 +149,7 @@ static void pp_uart_init( void )
         .rts_pin_no = RTS_PIN_NUMBER,
         .flow_control = APP_UART_FLOW_CONTROL_DISABLED,
         .use_parity = false,
-        .baud_rate = UART_BAUDRATE_BAUDRATE_Baud115200
+        .baud_rate = UART_BAUDRATE_BAUDRATE_Baud9600
     };
 
     /* uart module weirdly does not configure rx pin as input

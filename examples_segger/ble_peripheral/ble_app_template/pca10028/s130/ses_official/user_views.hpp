@@ -2,13 +2,16 @@
 #define  _USER_VIEWS_H
 
 
-/*
-* This enum must match the order in `user_view' array in `user_view.cpp'
-*/
+/* USER VIEWS
+ *
+ * This enum represents the different views that could possible be on
+ * the user interface. It must be kept in sync with @ref array_of_userviews
+ */
 enum user_views {
   VIEW_1_ACCELERATION_ONLY = 0,
   VIEW_2_ANGLE_ONLY,
   VIEW_3_ANGULARVELOCITY_ONLY,
+  VIEW_4_NOTIFICATION
 };
 
 

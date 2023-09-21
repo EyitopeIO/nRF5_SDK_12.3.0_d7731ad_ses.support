@@ -31,6 +31,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 uint8_t is_reversed = 0;
 
+static char println_buffer[MAX_STATIC_BUFFER_LENGTH] = {0};
+
 
 // a 5x7 font table
 extern uint8_t font[];
@@ -208,18 +210,17 @@ void PCD8544::print(const char *str) {
 }
 
 void PCD8544::println(const uint8_t *str) {
+
+  // `str' can never be null. if it ever is, fix it elsewhere
+
   static const char c[] = "\r\n";
   const size_t n = std::strlen(reinterpret_cast<char*>(const_cast<uint8_t*>(str)));
-  char *k = reinterpret_cast<char*>(std::malloc(n + 3)); // strlen(c) + '\0'
-  if (k == nullptr) {
-    // TODO: log to error page
-    return;
-  }
-  std::memcpy(k, str, n);
-  std::memcpy(k+n, c, 2);
-  k[n+3] = '\0';
-  print(const_cast<char*>(k));
-  std::free(k);
+  std::memset(println_buffer, 0, n + 2); // '2' for std::strlen(c)
+
+  std::memcpy(println_buffer, str, n);
+  std::memcpy(println_buffer + n, c, 2);
+  
+  print(const_cast<char*>(println_buffer));
 }
 
 void PCD8544::setCursor(uint8_t x, uint8_t y){

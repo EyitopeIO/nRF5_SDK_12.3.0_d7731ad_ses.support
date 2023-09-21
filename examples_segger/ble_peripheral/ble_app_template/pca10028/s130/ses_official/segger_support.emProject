@@ -14,7 +14,7 @@
     <configuration
       CMSIS_CORE="Yes"
       LIBRARY_HEAP_TYPE="Real-Time"
-      LIBRARY_IO_TYPE="None"
+      LIBRARY_IO_TYPE="RTT"
       Name="Common"
       WARNING_LEVEL="2 (Standard)"
       arm_architecture="v6M"
