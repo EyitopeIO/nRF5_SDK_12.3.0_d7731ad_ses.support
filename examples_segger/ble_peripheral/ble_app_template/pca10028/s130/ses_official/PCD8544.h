@@ -89,6 +89,7 @@ class PCD8544 {
   void write(uint8_t c);
   void print(const uint8_t *str);
   void print(const char *str);
+  void print(const char *str, int x, int y);
   void println(const uint8_t *str);
   void println(const char *str);
 

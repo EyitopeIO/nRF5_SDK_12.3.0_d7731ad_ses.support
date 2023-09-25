@@ -11,9 +11,8 @@
 
 
 extern "C" void main_loop_forever( void );
-
-
-static witmotion_data *main_data = NULL;
+unsigned int miss_fire = 0;
+witmotion_data *sensor_data = nullptr;
 
 
 void main_loop_forever( void )
@@ -36,12 +35,16 @@ void main_loop_forever( void )
     delay(WIT_TIME_TO_WAIT_FOR_DATA); 
     
     int status = wit_check_data_ready();
-    if ( status == WIT_DATA_READY ) {
-      main_data = wit_read_data();
-      view_update(main_data);
-      // show_data();
-      // show_stats(); 
+    
+    if (status == WIT_DATA_READY) {
+      sensor_data = wit_read_data();
     }
+    else {
+      notify(NOTIFICATION_MISSFIRE_OCCURRED);
+      miss_fire += 1;
+    }
+  
+    update_information();
   }
 }
 
@@ -55,7 +58,7 @@ int main( void )
 
     pp_spi_init(); // todo: move to view_init()
     adafruit_init();
-    view_init();
+    initialise_view();
 
     witmotion_init( 1 );
     main_loop_forever();

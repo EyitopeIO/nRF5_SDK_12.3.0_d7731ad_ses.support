@@ -75,6 +75,41 @@ This [link](https://forum.arduino.cc/t/ubuntu-arduino-ide-not-showing-any-ports/
 - You might be looking for a function [defined in a C++](https://gcc.gnu.org/legacy-ml/gcc-help/2009-10/msg00320.html) library `libsupc++`
 - Helpful [link](https://isocpp.org/wiki/faq/mixing-c-and-cpp) when mixing C++ and C.
 
+- `__cxa_new_handler` is apparently defined to be `0`. This [link](https://github.com/llvm/llvm-project/issues/23612) may or may not be related.
+  In the assembly snippet below, if `__cxa_new_handler` is 0, we "abort". Ihis 0 comparison (`NULL`) is because the handler is not defined.
+  You need to enable exception support in SES; otherwise, some handlers would likely be defined as null. Read [this](https://wiki.segger.com/C%2B%2B_Support_in_Embedded_Studio).
+  When I would eventually update all library options in the project configuration to use C++ exceptions, the `new` handler was defined and I could catch the exception.
+  It was then clear to me that there was infact insufficient memory, which was much to my suprise. I guess I didn't realise how memory it takes to create a C++ object.
+  Long story short, I was forced to move away from using classes.
+  ```
+    F7FFFF89    bl 0x00026194 <malloc>
+    2800        cmp r0, #0
+    D109        bne 0x0002629A
+    F000F811    bl 0x000262AC <std::get_new_handler()>
+    2800        cmp r0, #0
+    D006        beq 0x0002629C
+    4780        blx r0
+    0020        movs r0, r4
+    F7FFFF7F    bl 0x00026194 <malloc>
+    2800        cmp r0, #0
+    D0F5        beq 0x00026286
+    BD10        pop {r4, pc}
+    F7F8F942    bl 0x0001E524 <abort>
+    E7EC        b 0x0002627C
+    46C0        nop
+<operator new(unsigned int, std::nothrow_t const&)>
+    B510        push {r4, lr}
+    F7FFFFE5    bl 0x00026274 <operator new(unsigned int)>
+    BD10        pop {r4, pc}
+<std::get_new_handler()>
+    4B01        ldr r3, =0x200027F4 <__cxa_new_handler>
+    6818        ldr r0, [r3]
+    4770        bx lr
+    46C0        nop
+  ```
+
+Consider this [line](https://github.com/EyitopeIO/nRF5_SDK_12.3.0_d7731ad_ses.support/blob/bfef701406146002e51528d1c52ed3db7187b902/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/view_control.cpp#L12)
+
 ### SDK, IDE, Nordic, and other specific nuances
 - The first argument to the SVCALL is meant to be uint16_t, but it was defined as uint8_t. Although already implemented in the SDK,
 this [link](https://devzone.nordicsemi.com/f/nordic-q-a/13019/compiling-with-g-error-asm-operand-0-probably-doesn-t-match-constraints) has more information about why it was a problem. It was a known [bug](https://devzone.nordicsemi.com/f/nordic-q-a/2232/upgrading-to-sdk-5-2-0-breaks-build)
