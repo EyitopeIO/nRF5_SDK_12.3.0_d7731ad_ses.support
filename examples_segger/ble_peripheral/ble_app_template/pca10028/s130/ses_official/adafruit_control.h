@@ -9,7 +9,7 @@
  * Clear the screen if clear is true
  *
  */
-inline void clear_screen(bool clear);
+void clear_screen(bool clear);
 
 /**
  * Run a test on the adafruit display

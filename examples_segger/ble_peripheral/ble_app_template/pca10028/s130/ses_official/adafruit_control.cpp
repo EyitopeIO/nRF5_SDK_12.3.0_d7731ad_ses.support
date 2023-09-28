@@ -15,7 +15,7 @@
 PCD8544 nokia = PCD8544(DISPLAY_CLK, DISPLAY_DIN, DISPLAY_DC, DISPLAY_CE, DISPLAY_RESET);
 
 
-inline void clear_screen(bool clear) {
+void clear_screen(bool clear) {
   if (clear) {
     nokia.clear();
     nokia.display();
