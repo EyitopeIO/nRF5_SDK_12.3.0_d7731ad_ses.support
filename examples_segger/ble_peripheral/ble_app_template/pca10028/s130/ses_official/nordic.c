@@ -213,7 +213,7 @@ static void ble_stack_init(void)
 }
 
 
-void board_begin( void )
+void board_begin(void (*push_btn_handler)(bsp_event_t event))
 {
    uint32_t err_code;
     // Initialize.
@@ -231,7 +231,7 @@ void board_begin( void )
      * by my calculations. Follow the defines to know how it was calculated. I
      * may be wrong.
      */
-    err_code = bsp_init(BSP_INIT_LED, APP_TIMER_TICKS(100, APP_TIMER_PRESCALER), NULL);
+    err_code = bsp_init(BSP_INIT_LED, APP_TIMER_TICKS(100, APP_TIMER_PRESCALER), push_btn_handler);
     APP_ERROR_CHECK(err_code);
 
     ble_stack_init();

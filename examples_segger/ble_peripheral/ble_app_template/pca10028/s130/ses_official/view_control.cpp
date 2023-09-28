@@ -1,6 +1,7 @@
 #include "user_views.hpp"
 #include "view_control.h"
 #include "adafruit_control.h"
+#include <bsp.h>
 #include <Arduino.h>
 #include <cstdio>
 #include <cstring>
@@ -44,49 +45,71 @@ static const char *notification_texts[] = {
 };
 
 
-void notify(notification note) {
+void notify(notification note)
+{
   current_view.notf_triggered = note;
   current_view.prev = current_view.view;
-  current_view.view = VIEW_4_NOTIFICATION;
+  current_view.view = VIEW_3_NOTIFICATION;
   current_view.view_change = true;
 }
 
 
-void initialise_view(void) {
-  current_view.view = VIEW_1_ACCELERATION_ONLY;
-  current_view.prev = VIEW_1_ACCELERATION_ONLY;
+void initialise_view(void)
+{
+  current_view.view = VIEW_0_ACCELERATION_ONLY;
+  current_view.prev = VIEW_0_ACCELERATION_ONLY;
   current_view.view_change = true;
   current_view.notf_triggered = NOTIFICATION_NONE;
 }
 
 
-void update_information() {
+void update_information()
+{
 
-  if (current_view.view_change) {
+  if (current_view.view_change)
     current_view.view_change = false;
-  }
+
+  if ((sensor_data == nullptr) && (current_view.view != VIEW_3_NOTIFICATION || current_view.view != VIEW_NULL))
+    return;
 
   // We absolutely want to null terminate the string. Not taking chances.
   std::memset(const_cast<char*>(processed_string), 0, MAX_STATIC_BUFFER_LENGTH );
 
-  switch(current_view.view) {
-
-    case VIEW_1_ACCELERATION_ONLY:
-      if (sensor_data == nullptr) {
-        return;
-      }
+  switch(current_view.view)
+  {
+    case VIEW_0_ACCELERATION_ONLY:
       std::sprintf(
         processed_string,
-        array_of_userviews[VIEW_1_ACCELERATION_ONLY],
+        array_of_userviews[VIEW_0_ACCELERATION_ONLY],
         sensor_data->acceleration[1],
         sensor_data->acceleration[2],
         sensor_data->acceleration[3]
       );
       break;
 
-    case VIEW_4_NOTIFICATION:
-      switch(current_view.notf_triggered) {
+    case VIEW_1_ANGLE_ONLY:
+      std::sprintf(
+        processed_string,
+        array_of_userviews[VIEW_1_ANGLE_ONLY],
+        sensor_data->angle[1],
+        sensor_data->angle[2],
+        sensor_data->angle[3]
+      );
+      break;
 
+    case VIEW_2_ANGULARVELOCITY_ONLY:
+      std::sprintf(
+        processed_string,
+        array_of_userviews[VIEW_2_ANGULARVELOCITY_ONLY],
+        sensor_data->angular_velocity[1],
+        sensor_data->angular_velocity[2],
+        sensor_data->angular_velocity[3]
+      );
+      break;
+
+    case VIEW_3_NOTIFICATION:
+      switch(current_view.notf_triggered)
+      {
         case NOTIFICATION_MISSFIRE_OCCURRED:
           std::sprintf(
             processed_string,
@@ -103,13 +126,55 @@ void update_information() {
       }
       current_view.view = current_view.prev;
       return;
-
-    default:
-      break;
   }
 
   last_write_n = std::strlen(processed_string);
-  printf("last_write_n: %d\n", last_write_n);
-  printf("s: %s\n", processed_string);
   adafruit_print(processed_string, std::strlen(processed_string), 0, 0, false);
+}
+
+
+user_views operator++(user_views& v, int n)
+{
+  user_views tmp = v;
+  if ((static_cast<int>(tmp) + 1) == static_cast<int>(NUMBER_OF_NORMAL_USER_VIEWS))
+  {
+    tmp = VIEW_0_ACCELERATION_ONLY;
+  }
+  else {
+    tmp = static_cast<user_views>(static_cast<int>(v) + 1);
+  }
+  v = tmp;
+  return tmp;  
+}
+
+
+user_views operator--(user_views& v, int n)
+{
+  user_views tmp = v;
+  if ((static_cast<int>(v) - 1) < static_cast<int>(VIEW_0_ACCELERATION_ONLY))
+  {
+    tmp = static_cast<user_views>(static_cast<int>(NUMBER_OF_NORMAL_USER_VIEWS) - 1);
+  }
+  else {
+    tmp = static_cast<user_views>(static_cast<int>(v) - 1);
+  }
+  v = tmp;
+  return tmp;
+}
+
+
+void push_button_handler(bsp_event_t event)
+{
+  current_view.view_change = true;
+  current_view.notf_triggered = NOTIFICATION_NONE;
+  current_view.prev = current_view.view;
+  switch(event)
+  {
+    case BSP_EVENT_KEY_0:
+      (current_view.view)++; // see overloaded operator++ defined above
+      break;
+    case BSP_EVENT_KEY_1:
+      (current_view.view)--; // see overloaded operator-- defined above
+      break;
+  }
 }

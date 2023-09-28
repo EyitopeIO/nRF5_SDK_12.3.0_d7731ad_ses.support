@@ -41,7 +41,7 @@ static void wit_request_timeout_handler( void * p_context );
 static void pp_uart_init( void );
 
 
-APP_TIMER_DEF(witmotion_polling_id);
+// APP_TIMER_DEF(witmotion_polling_id);
 
 
 void witmotion_init( int start_or_stop )

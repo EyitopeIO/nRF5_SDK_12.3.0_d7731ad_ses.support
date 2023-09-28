@@ -11,6 +11,7 @@
 
 
 extern "C" void main_loop_forever( void );
+extern void push_button_handler(bsp_event_t event);
 unsigned int miss_fire = 0;
 witmotion_data *sensor_data = nullptr;
 
@@ -54,7 +55,7 @@ void main_loop_forever( void )
  */
 int main( void )
 {
-    board_begin();
+    board_begin(push_button_handler);
 
     pp_spi_init(); // todo: move to view_init()
     adafruit_init();

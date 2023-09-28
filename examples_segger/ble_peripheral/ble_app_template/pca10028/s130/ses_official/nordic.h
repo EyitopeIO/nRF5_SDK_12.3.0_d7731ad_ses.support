@@ -16,7 +16,7 @@ extern "C" {
 #include "peripherals.h"
 #include "nrf_soc.h"
 
-void board_begin( void );
+void board_begin(void (*push_btn_handler)(bsp_event_t event));
 
 #endif
 
