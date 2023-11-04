@@ -41,7 +41,7 @@ extern witmotion_data *sensor_data;
 /// @brief The text that is displayed when a notification is triggered
 /// @details This array must be kept in sync with @ref notification
 static const char *notification_texts[] = {
-  "%d miss fires have occurred\n"
+  "x errs: %d\n"
 };
 
 
@@ -69,7 +69,7 @@ void update_information()
   if (current_view.view_change)
     current_view.view_change = false;
 
-  if ((sensor_data == nullptr) && (current_view.view != VIEW_3_NOTIFICATION || current_view.view != VIEW_NULL))
+  if (!sensor_data && (current_view.view != VIEW_3_NOTIFICATION || current_view.view != VIEW_NULL))
     return;
 
   // We absolutely want to null terminate the string. Not taking chances.
