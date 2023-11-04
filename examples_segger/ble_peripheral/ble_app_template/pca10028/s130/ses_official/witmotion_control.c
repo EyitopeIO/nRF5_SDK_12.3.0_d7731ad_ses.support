@@ -97,10 +97,15 @@ void show_data( void )
 
 witmotion_data *wit_read_data( void )
 {
+#ifdef DEBUG_MODE_PRINTING
+    printf("rx: ");
+    for (int t=0;t<(AX+12);t++) printf("%X ", sReg[t]);
+    printf("\n");
+#endif
   for (int i=0; i<3; i++) {
-    wit_data.acceleration[i] = (float)sReg[AX+i]/32768.0f*16.0f;
-    wit_data.angular_velocity[i] = (float)sReg[GX+i]/32768.0f*2000.0f;
-    wit_data.angle[i] = (float)sReg[Roll+i]/32768.0f*180.0f;
+    wit_data.acceleration[i] = ((float)sReg[AX+i]/32768.0f) * 16.0f;
+    wit_data.angular_velocity[i] = ((float)sReg[GX+i]/32768.0f) * 2000.0f;
+    wit_data.angle[i] = ((float)sReg[Roll+i]/32768.0f) * 180.0f;
   }
 #if DEBUG_MODE_PRINTING
   // show_data();
@@ -116,6 +121,11 @@ static void transmit_data(uint8_t *p_data, uint32_t uiSize)
 {
   uint32_t i,err_code;
   wit_evt.sending_data = 1; // set to 0 in application uart event handler
+#if DEBUG_MODE_PRINTING
+  printf("tx: ");
+  for (i=0;i<uiSize;i++) printf("%X ",p_data[i]);
+  printf("\n");
+#endif
   for ( i=0,err_code=0; i<uiSize; i++ ) app_uart_put(p_data[i]); // add to fifo
 }
 
@@ -188,7 +198,6 @@ static void wit_uart_event_handler( app_uart_evt_t *p_event )
         case APP_UART_DATA_READY:
           err_code = app_uart_get(&c);
           WitSerialDataIn(c);
-          // printf("rx: %c\n",c);
           break;
         case APP_UART_FIFO_ERROR:
           break;
