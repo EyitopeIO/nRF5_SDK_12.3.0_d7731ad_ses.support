@@ -41,7 +41,7 @@ takes you to the next page of information or to the previous.
 `nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official`
 
 
-# Comments left to self that may be useful
+# Diary
 
 - Assuming you have installed `openocd` v0.11.0, start the GDB server. You also
 need to have the stlink-v2 debugger. It plugs to the SWD interface.
@@ -116,7 +116,7 @@ That initial library worked like a charm. These files are
   It was then clear to me that there was infact insufficient memory, which was much to my suprise. I guess I didn't realise how memory it takes to create a C++ object.
   Long story short, I was forced to move away from using classes.
 
-  ```
+```
     F7FFFF89    bl 0x00026194 <malloc>
     2800        cmp r0, #0
     D109        bne 0x0002629A
@@ -141,14 +141,7 @@ That initial library worked like a charm. These files are
     6818        ldr r0, [r3]
     4770        bx lr
     46C0        nop
-  ```
-
-  Consider this [line](https://github.com/EyitopeIO/nRF5_SDK_12.3.0_d7731ad_ses.support/blob/bfef701406146002e51528d1c52ed3db7187b902/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official/view_control.cpp#L12)
-
-  Anyway, I would eventually discover that using the `new` C++ keywords does hog
-  a log memory. When I would ecentually enable C++ exception support, I was
-  surprised to see that bad_alloc exception. So I modified the code to not use
-  `new` at all.
+```
 
 
 - The first argument to the SVCALL is meant to be uint16_t, but it was defined
@@ -158,11 +151,10 @@ That initial library worked like a charm. These files are
 
 - Define a global macro in SES [here](https://studio.segger.com/index.htm?https://studio.segger.com/ide_project_macros.htm)
 
-- You can develop withouth SES as [this guy shows](https://www.youtube.com/watch?v=o_9Lmm0SYr8)
-  Just call make on your project
+- You can develop withouth SES as [this guy shows](https://www.youtube.com/watch?v=o_9Lmm0SYr8). Just call make in your project.
 
 
-**Some usefule nordic links on the forum**
+**Some useful links on the Nordic forum**
 - [clock setup](https://devzone.nordicsemi.com/f/nordic-q-a/4118/what-is-the-high-frequency-clock-model-for-nrf51)
 
 - Dealing with data loss when [interrupted](https://devzone.nordicsemi.com/f/nordic-q-a/294/what-s-the-maximum-of-baud-rate-supported-of-uart) for long by the softdevice
@@ -170,39 +162,38 @@ That initial library worked like a charm. These files are
 - Something about why `APP_UART_COMMUNICATION_ERROR` [here](https://devzone.nordicsemi.com/f/nordic-q-a/60038/app_uart_communication_error/245875)
 
 
+For the initial module, I used a level converter between the nRF and the module and that worked as expected. With this new module, I didn't. I kept having frame errors and missing bits. So I powered the module with 3.3V (previously 5V and level converter) and plugged the module directly to the nRF bypassed the logic level converter. It worked! I actually got this idea to bypass after noticing that no matter what voltage you put on the module, the rx/tx line was 3.3V logic.
 
-# Hardware notes
+Some images are [here](https://drive.google.com/drive/folders/1jXyxWfyETwIEblGPjH74MOFDfMVSOtNx?usp=sharing)
 
-TODO:
-- The battery protection IC against undervoltage discharge
-- 3.3V regulation for the entire circuit
-- Preferrably onw IC that is both a voltage regulator and a battery charger
-- No need for overcurrent protection because it's unlikely a situation would
-  warrant that. Will only cater for undervoltage protection since we don't want
-  the battery discharging so low. Implement circuit to protect from undervoltage.
-- Add switch between battery and rest of circuit to explicitly power off.
 
-**Actual notes**
-- In the 4-pin connector, 2.54mm is not 2.50mm. Things didn't fit eventually.
-- For the battery management, I eventually used an external module. Easier.
-- I did not follow the application circuit diagram recommended by the MCP1700 datasheet.
-  I was then left without room to add a 1uF capacitor on the output.
-- The LEDs were not the correct shape/size. In did not sit comfortably on the PCB because of
-  the terminal.
-- I did not choose the correct size of resistors. They were too large for the PCB. I actually didn't
-  The SPDT switch also did not fit. It was too big. There was also an electrical mistake in the
-  connection to the switch.
-- Misunderstood how to turn on the LED of the Nokia display. I only needed to ground the pin with an
-  NPN, but the board did not have this actual connection.
-- Blew up the initial RS485-TTL module I had and bought another. It said it accepted 3.3V-33V logic.
-  For the initial module, I used a level converter between the nRF and the module and that worked as
-  expected. With this new module, it didn't. I kept having frame errors and missing bits. So I powered
-  the module with 3.3V (previously 5V and level converter) and plugged the module directly to the nRF
-  bypassed the logic level converter. It worked.
-  I actually got this idea to bypass after noticing that whatever voltage you put on the module, the
-  rx/tx line was 3.3V logic; hence
+### 26 Aug 2024
 
-  I think the EDA software I used warned me but I did not want to take these into account. I don't
-  think I had enough thought on the implications and was instead in a hurry to just get the thing
-  produced. For example, I could have used Flux.ai or Kicad knowing fully well that Autodesk Eagle
-  was being fazed out. I was in a hurry to go into production and this had unfortunate consequences.
+Transistors Q4 came with pads unexposed, so I fixed the board manually by scratching away
+the silkscreen. I used a PCB library of the internet, and turns out the fault was from
+that library. Never expected a fault from a reliable source. I used Diptrace, but I'm sure
+a more intelligent EDA software would have warned me right away.
+
+From the last time I prototyped on a breadboard (several months back), I was able to use
+the LCD. After assembling on a PCB, the LCD printed garbage characters and sometimes
+nothing. Few times it printed something meaningful, but I was unable to reproduce this.
+Having no oscilloscope to check the SPI signals, I was left with speculations. 
+
+My first suspicion was insufficient power (perhaps wrong calculations without accounting enough
+loses), so I aimed to see how much power I could draw from the board. I put my multimiter
+to the 200mA range and short-circuited VCC and GND at some random place after the power IC. I
+forgot I had no overcurrent protection, so I damaged few ICs. Annoyingly, this 3V3 power IC
+became a short-circuit when it broke. I thought it was just the ICs, but whenever I changed it,
+it smoked. I wasn't able to find the short, so I came to the conclusion that the board didn't
+have enough protection anyway, so I parked this prototype and aimed to do it in [Flux.ai](www.flux.ai).
+
+Gotta say it's annoying to put all that time and effort into soldering and assembling only
+to blow everything up and start again.
+
+**Future Improvements**
+- Place SMDs and space them such that it's easy to change them if something went wrong.
+- Use proper connectors and accommodate a test supply input rather than the hack with
+  jumper cables. Make it easy to temporarily connect modules before you solder them.
+- Add over-current protection. Make it hard to do something dumb. Add 10% to power supply
+  requirements to account for loses.
+- Test power supply circuitry before anything else.
