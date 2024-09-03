@@ -121,7 +121,7 @@ static void transmit_data(uint8_t *p_data, uint32_t uiSize)
 {
   uint32_t i,err_code;
   wit_evt.sending_data = 1; // set to 0 in application uart event handler
-#if DEBUG_MODE_PRINTING
+#if DEBUG_MODE_PRINTING && 0
   printf("tx: ");
   for (i=0;i<uiSize;i++) printf("%X ",p_data[i]);
   printf("\n");

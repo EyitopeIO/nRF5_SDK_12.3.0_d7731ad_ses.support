@@ -74,9 +74,9 @@
     <folder Name="Application">
       <folder Name="adafruit">
         <file file_name="Arduino.h" />
+        <file file_name="glcdfont.c" />
         <file file_name="PCD8544.cpp" />
         <file file_name="PCD8544.h" />
-        <file file_name="glcdfont.c" />
         <file file_name="pcdtest.cpp" />
       </folder>
       <folder Name="witmotion">
@@ -98,10 +98,6 @@
       <file file_name="peripherals.c" />
       <file file_name="peripherals.h" />
       <file file_name="sdk_config.h" />
-      <file file_name="user_views.cpp" />
-      <file file_name="user_views.hpp">
-        <configuration Name="Debug" build_exclude_from_build="No" />
-      </file>
       <file file_name="view_control.cpp" />
       <file file_name="view_control.h" />
       <file file_name="witmotion_control.c" />

@@ -13,6 +13,11 @@
 extern "C" void main_loop_forever( void );
 extern void push_button_handler(bsp_event_t event);
 unsigned int miss_fire = 0;
+
+/** \brief The sensor data that is being displayed on the screen
+ * \details This is a pointer to the sensor data that is being displayed on
+ *          the screen. It is defined main.cpp
+ */
 witmotion_data *sensor_data = nullptr;
 
 
@@ -41,11 +46,11 @@ void main_loop_forever( void )
       sensor_data = wit_read_data();
     }
     else {
-      notify(NOTIFICATION_MISSFIRE_OCCURRED);
+      show_error_page();
       miss_fire += 1;
     }
   
-    update_information();
+    update_display_info();
   }
 }
 

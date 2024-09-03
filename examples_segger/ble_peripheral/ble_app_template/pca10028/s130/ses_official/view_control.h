@@ -19,14 +19,6 @@ extern "C" {
 #include <witmotion_control.h>
 
 
-/// @brief Notifications that can be triggered by the function @ref notify
-/// @details This array must be kept in sync with @ref notification_texts
-enum notification {
-  NOTIFICATION_MISSFIRE_OCCURRED = 0,
-  NOTIFICATION_NONE
-};
-
-
 #ifdef __cplusplus
 }
 #endif
@@ -43,7 +35,7 @@ enum notification {
  * @param note The notification that has just occurred
  *
  */
-void notify(notification note);
+void show_error_page();
 
 
 
@@ -54,5 +46,5 @@ void notify(notification note);
  * objects are known in this function
  *
  */
-void initialise_view(void);
-void update_information();
+void initialise_view();
+void update_display_info();

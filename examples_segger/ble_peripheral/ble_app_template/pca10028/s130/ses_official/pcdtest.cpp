@@ -33,44 +33,44 @@ void adafruit_test( void ) {
   nokia.setContrast(40);
   // turn all the pixels on (a handy test)
   nokia.command(PCD8544_DISPLAYCONTROL | PCD8544_DISPLAYALLON);
-  delay(500);
+  delay(100);
   // back to normal
   nokia.command(PCD8544_DISPLAYCONTROL | PCD8544_DISPLAYNORMAL);
 
   // show splashscreen
   nokia.display();
-  delay(2000);
+  delay(100);
   nokia.clear();
 
   // draw a single pixel
   nokia.setPixel(10, 10, BLACK);
   nokia.display();        // show the changes to the buffer
-  delay(500);
+  delay(100);
   nokia.clear();
 
    // draw many lines
   testdrawline();
   nokia.display();       // show the lines
-  delay(500);
+  delay(100);
   nokia.clear();
 
   // draw mulitple circles
   testdrawcircle();
   nokia.display();
-  delay(500);
+  delay(100);
   nokia.clear();
 
   // draw the first ~120 characters in the font
   testdrawchar();
   nokia.display();
-  delay(500);
+  delay(100);
   nokia.clear();
 
   // draw a string at location (0,0)
   nokia.setCursor(0, 0);
   nokia.print("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor");
   nokia.display();
-  delay(500);
+  delay(200);
   nokia.clear();
   nokia.display();
 }

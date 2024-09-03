@@ -31,7 +31,7 @@ static void spi_event_handler(nrf_drv_spi_evt_t const * p_event)
 void pp_spi_init( void )
 {
     DISPLAY_BACKLIGHT_ON;
-    nrf_delay_ms(100);
+    nrf_delay_ms(500);
     nrf_drv_spi_config_t DISPLAY_spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
     DISPLAY_spi_config.ss_pin = DISPLAY_CE;
     DISPLAY_spi_config.mosi_pin = DISPLAY_DIN;
