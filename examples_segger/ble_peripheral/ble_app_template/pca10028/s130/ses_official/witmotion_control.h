@@ -17,11 +17,9 @@ typedef struct
   float angle[3];
 } witmotion_data;
 
-enum wit_definition {
+enum wit_data_status {
   WIT_REQ_SUCCESS = 0,
-  WIT_DATA_READY,
-  WIT_DATA_NOT_READY,
-  WIT_REQ_TIMEOUT
+  WIT_REQ_FAILED,
 };
 
 /**
@@ -59,7 +57,7 @@ int wit_check_data_ready( void );
  *
  * @return Pointer to the data structure containing the data.
  */
-witmotion_data *wit_read_data( void );
+void wit_read_data( void );
 
 
 void show_stats( void );

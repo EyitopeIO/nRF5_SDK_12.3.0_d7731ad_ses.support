@@ -19,29 +19,34 @@
 
 #define UART_BUFFER_SIZE 64
 
-typedef struct
-{
-  char data_request;
-  char sending_data;
-  char s_cDataUpdate;
-  char request_timeout;
-  uint32_t total_requests;
-  uint32_t total_reads;
-  uint32_t total_timeouts;
-} witmotion_evt;
+/**
+ * \brief Contains data read by the sensor
+ */
+volatile witmotion_data wit_data = { 99.99 };
 
+/**
+ * \brief Number of times we had a UART communication error
+ */
+unsigned int uart_communication_errors = 0;
 
-static volatile witmotion_evt wit_evt = { 0 };
-static witmotion_data wit_data = { 99.99 };
+/**
+ * \brief Becomes 1 when WIT data available. Must be reset to 0
+ */
+volatile char s_cDataUpdate = 0;
 
-static void transmit_data( uint8_t *p_data, uint32_t uiSize );
-static void process_data( uint32_t uiReg, uint32_t uiRegNum );
+static void transmit_data_cb( uint8_t *p_data, uint32_t uiSize );
+static void data_ready_cb( uint32_t uiReg, uint32_t uiRegNum );
 static void wit_uart_event_handler( app_uart_evt_t *p_event );
-static void wit_request_timeout_handler( void * p_context );
 static void pp_uart_init( void );
 
 
 // APP_TIMER_DEF(witmotion_polling_id);
+
+
+static inline void reset_wit_data_status(void)
+{
+  s_cDataUpdate = 0;
+}
 
 
 void witmotion_init( int start_or_stop )
@@ -49,8 +54,8 @@ void witmotion_init( int start_or_stop )
   if (start_or_stop) {
     pp_uart_init();
     WitInit(WIT_PROTOCOL_MODBUS, MODBUS_ADDR);
-    WitSerialWriteRegister(transmit_data);
-    WitRegisterCallBack(process_data);
+    WitSerialWriteRegister(transmit_data_cb);
+    WitRegisterCallBack(data_ready_cb);
     WitDelayMsRegister(nrf_delay_ms);
     //app_timer_create(&witmotion_polling_id,
     //                APP_TIMER_MODE_SINGLE_SHOT,
@@ -61,11 +66,7 @@ void witmotion_init( int start_or_stop )
 
 void wit_make_data_request( void )
 {
-  wit_evt.data_request = 1;
-  wit_evt.s_cDataUpdate = 0;
-  wit_evt.total_requests += 1;
-  wit_evt.request_timeout = 0;
-
+  s_cDataUpdate = 0;
   WitReadReg(AX, 12); // read 12 registers starting from AX
 
   //app_timer_start(witmotion_polling_id,
@@ -77,73 +78,51 @@ void wit_make_data_request( void )
 
 int wit_check_data_ready( void )
 {
-  if (wit_evt.s_cDataUpdate && wit_evt.data_request )
-    return WIT_DATA_READY;
-
-  if (wit_evt.request_timeout)
-    return WIT_REQ_TIMEOUT;
-
-  return WIT_DATA_NOT_READY;
+  enum wit_data_status state;
+  if (s_cDataUpdate) {
+    state = WIT_REQ_SUCCESS;
+  } else {
+    state = WIT_REQ_FAILED;
+    uart_communication_errors += 1;
+  }
+  return state;
 }
 
 
-void show_data( void )
-{
-  printf("a:%.2f %.2f %.2f\r\n",wit_data.acceleration[1],wit_data.acceleration[2],wit_data.acceleration[3]);
-  printf("w:%.2f %.2f %.2f\r\n",wit_data.angular_velocity[1],wit_data.angular_velocity[2],wit_data.angular_velocity[3]);
-  printf("<:%.1f %.1f %.1f\r\n",wit_data.angle[0],wit_data.angle[1],wit_data.angle[2]);
-}
+//static void show_data( void )
+//{
+//  printf("a:%.2f %.2f %.2f\r\n",wit_data.acceleration[1],wit_data.acceleration[2],wit_data.acceleration[3]);
+//  printf("w:%.2f %.2f %.2f\r\n",wit_data.angular_velocity[1],wit_data.angular_velocity[2],wit_data.angular_velocity[3]);
+//  printf("<:%.1f %.1f %.1f\r\n",wit_data.angle[0],wit_data.angle[1],wit_data.angle[2]);
+//}
 
-
-witmotion_data *wit_read_data( void )
+/**
+ * \brief Load sensor data into struct, ready to be displayed
+ */
+void wit_read_data( void )
 {
-#ifdef DEBUG_MODE_PRINTING
-    printf("rx: ");
-    for (int t=0;t<(AX+12);t++) printf("%X ", sReg[t]);
-    printf("\n");
-#endif
   for (int i=0; i<3; i++) {
     wit_data.acceleration[i] = ((float)sReg[AX+i]/32768.0f) * 16.0f;
     wit_data.angular_velocity[i] = ((float)sReg[GX+i]/32768.0f) * 2000.0f;
     wit_data.angle[i] = ((float)sReg[Roll+i]/32768.0f) * 180.0f;
   }
-#if DEBUG_MODE_PRINTING
-  // show_data();
-#endif
-  wit_evt.request_timeout = 0;
-  wit_evt.s_cDataUpdate = 0;
-  wit_evt.data_request = 0; // set to 1 on data request
-  return &wit_data;
+  reset_wit_data_status();
 }
 
-
-static void transmit_data(uint8_t *p_data, uint32_t uiSize)
+/**
+ * \brief Called by WIT library to transmit data
+ */
+static void transmit_data_cb(uint8_t *p_data, uint32_t uiSize)
 {
   uint32_t i,err_code;
-  wit_evt.sending_data = 1; // set to 0 in application uart event handler
-#if DEBUG_MODE_PRINTING && 0
-  printf("tx: ");
-  for (i=0;i<uiSize;i++) printf("%X ",p_data[i]);
-  printf("\n");
-#endif
   for ( i=0,err_code=0; i<uiSize; i++ ) app_uart_put(p_data[i]); // add to fifo
 }
-
-
-static void process_data(uint32_t uiReg, uint32_t uiRegNum)
+/**
+ * \brief Called by WIT library when valid data has been received
+ */
+static inline void data_ready_cb(uint32_t uiReg, uint32_t uiRegNum)
 {
-  wit_evt.total_reads += 1;
-  wit_evt.s_cDataUpdate = 1;  // set to 0 when new data requested
-}
-
-
-void show_stats( void )
-{
-  printf(
-    "treq|tread|ttime: %i|%i|%i\r             ",
-    wit_evt.total_requests,
-    wit_evt.total_reads,
-    wit_evt.total_timeouts);
+  s_cDataUpdate = 1;  // set to 0 when new data requested
 }
 
 
@@ -182,13 +161,6 @@ static void pp_uart_init( void )
 }
 
 
-static void wit_request_timeout_handler( void * p_context )
-{
-  wit_evt.request_timeout = 1;
-  wit_evt.total_timeouts += 1;
-}
-
-
 static void wit_uart_event_handler( app_uart_evt_t *p_event )
 {
     static uint8_t c = 0;
@@ -202,11 +174,9 @@ static void wit_uart_event_handler( app_uart_evt_t *p_event )
         case APP_UART_FIFO_ERROR:
           break;
         case APP_UART_COMMUNICATION_ERROR:
-          wit_evt.sending_data = 0;
           digitalWrite(LED_RGB_BLUE, LOW);
           break;
         case APP_UART_TX_EMPTY:
-          wit_evt.sending_data = 0;
           break;
         case APP_UART_DATA:
         default:

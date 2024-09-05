@@ -24,27 +24,14 @@ extern "C" {
 #endif
 #endif
 
-
 /**
- * Trigger a notification
- *
- * Other parts of the code may take action depending on what notification
- * has just occured. It is important that notification handlers should
- * consider how they affect other processes.
- *
- * @param note The notification that has just occurred
- *
+ * \brief Set vars so that error page shows on next display update
  */
-void show_error_page();
-
-
+void set_next_page_to_error_page();
 
 /**
- * Initialise all view objects and assets
- *
- * All initialisation should be done here. Ensure initial state of all view
- * objects are known in this function
- *
+ * \brief Initialise all display state
  */
 void initialise_view();
+
 void update_display_info();

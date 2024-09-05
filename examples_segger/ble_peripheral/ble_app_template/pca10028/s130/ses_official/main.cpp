@@ -12,13 +12,6 @@
 
 extern "C" void main_loop_forever( void );
 extern void push_button_handler(bsp_event_t event);
-unsigned int miss_fire = 0;
-
-/** \brief The sensor data that is being displayed on the screen
- * \details This is a pointer to the sensor data that is being displayed on
- *          the screen. It is defined main.cpp
- */
-witmotion_data *sensor_data = nullptr;
 
 
 void main_loop_forever( void )
@@ -34,22 +27,17 @@ void main_loop_forever( void )
     
     wit_make_data_request(); 
 
-    /* For whatever reason, the sensor may not update after we send data,
-     * so we Could be stuck waiting endlessly for it. This is delay was from
-     * experimenting with the Windows application provided by WIT
+    /* There's inherent latency due to the bus speed and processing time. This delay 
+     * was from experimenting with the Windows application provided by WIT.
      */
     delay(WIT_TIME_TO_WAIT_FOR_DATA); 
     
-    int status = wit_check_data_ready();
-    
-    if (status == WIT_DATA_READY) {
-      sensor_data = wit_read_data();
+    if (wit_check_data_ready() != WIT_REQ_SUCCESS) {
+      set_next_page_to_error_page();
+    } else {
+      wit_read_data();
     }
-    else {
-      show_error_page();
-      miss_fire += 1;
-    }
-  
+
     update_display_info();
   }
 }

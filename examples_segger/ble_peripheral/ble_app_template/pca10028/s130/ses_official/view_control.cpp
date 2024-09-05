@@ -1,11 +1,14 @@
 #include "view_control.h"
 #include "adafruit_control.h"
+#include "witmotion_control.h"
 #include <bsp.h>
 #include <Arduino.h>
 #include <cstdio>
 #include <cstring>
 #include <cassert>
 
+
+extern witmotion_data wit_data;
 
 /**
  * \brief It must be kept in sync with \ref array_of_userviews
@@ -30,7 +33,6 @@ enum user_views {
 struct current_view_t {
   user_views view;
   user_views prev;
-  bool view_change;
 };
 
 /** \brief The maximum length of a string that can be printed to the screen
@@ -42,7 +44,7 @@ static char processed_string[MAX_STATIC_BUFFER_LENGTH] = {0};
 
 
 static current_view_t current_view;
-extern unsigned int miss_fire;
+extern unsigned int uart_communication_errors;
 extern witmotion_data *sensor_data;
 
 
@@ -81,11 +83,10 @@ const char *array_of_userviews[] = {
 };
 
 
-void show_error_page()
+void set_next_page_to_error_page()
 {
   current_view.prev = current_view.view;
   current_view.view = VIEW_ERROR;
-  current_view.view_change = true;
 }
 
 
@@ -93,21 +94,11 @@ void initialise_view(void)
 {
   current_view.view = VIEW_ACCELERATION;
   current_view.prev = VIEW_ACCELERATION;
-  current_view.view_change = true;
 }
 
 
 void update_display_info()
 {
-
-  if (current_view.view_change) {
-    current_view.view_change = false;
-  }
-
-  if (!sensor_data) {
-    current_view.view = VIEW_ERROR;
-  }
-
   std::memset(const_cast<char*>(processed_string), 0, MAX_STATIC_BUFFER_LENGTH );
 
   switch(current_view.view)
@@ -116,9 +107,9 @@ void update_display_info()
       std::sprintf(
         processed_string,
         array_of_userviews[VIEW_ACCELERATION],
-        sensor_data->acceleration[1],
-        sensor_data->acceleration[2],
-        sensor_data->acceleration[3]
+        wit_data.acceleration[1],
+        wit_data.acceleration[2],
+        wit_data.acceleration[3]
       );
       break;
 
@@ -126,9 +117,9 @@ void update_display_info()
       std::sprintf(
         processed_string,
         array_of_userviews[VIEW_ANGLE],
-        sensor_data->angle[1],
-        sensor_data->angle[2],
-        sensor_data->angle[3]
+        wit_data.angle[1],
+        wit_data.angle[2],
+        wit_data.angle[3]
       );
       break;
 
@@ -136,9 +127,9 @@ void update_display_info()
       std::sprintf(
         processed_string,
         array_of_userviews[VIEW_ANGULARVELOCITY],
-        sensor_data->angular_velocity[1],
-        sensor_data->angular_velocity[2],
-        sensor_data->angular_velocity[3]
+        wit_data.angular_velocity[1],
+        wit_data.angular_velocity[2],
+        wit_data.angular_velocity[3]
       );
       break;
 
@@ -146,7 +137,7 @@ void update_display_info()
       std::sprintf(
         processed_string,
         array_of_userviews[VIEW_ERROR],
-        miss_fire
+        uart_communication_errors
       );
       adafruit_print(processed_string, true);
       delay(2000);
@@ -194,7 +185,6 @@ user_views operator--(user_views& v, int n)
 
 void push_button_handler(bsp_event_t event)
 {
-  current_view.view_change = true;
   current_view.prev = current_view.view;
   switch(event)
   {
