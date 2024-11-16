@@ -3,8 +3,6 @@
 
 #include <cstdint>
 
-#define MAX_STATIC_BUFFER_LENGTH 4032
-
 /**
  * Clear the screen if clear is true
  *
@@ -18,7 +16,6 @@ void clear_screen(bool clear);
  * few tricks to show off the display.
  */
 void adafruit_test( void );
-
 
 /**
  * Initialize the adafruit display
@@ -34,7 +31,6 @@ void adafruit_init( void );
  * @param c The byte to write
  */
 void adafruit_spiwrite (uint8_t c);
-
 
 /**
  * Write a buffer of bytes to the display
@@ -70,5 +66,9 @@ void adafruit_print(const char *c, bool clear = false);
  * @param clear If true, clear the display before printing
  */
 void adafruit_print(const char *c, uint16_t len, int x, int y, bool clear = false);
+
+
+void adafruit_print(uint32_t n);
+
 
 #endif

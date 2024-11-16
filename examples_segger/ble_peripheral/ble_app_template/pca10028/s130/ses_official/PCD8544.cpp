@@ -29,16 +29,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "PCD8544.h"
 #include "adafruit_control.h"
 
-uint8_t is_reversed = 0;
-
-static char println_buffer[MAX_STATIC_BUFFER_LENGTH] = {0};
-
+static uint8_t println_buffer[LCDWIDTH * LCDHEIGHT / 8] = {0};
 
 // a 5x7 font table
 extern uint8_t font[];
 
 // the memory buffer for the LCD
-uint8_t pcd8544_buffer[LCDWIDTH * LCDHEIGHT / 8] = {
+static uint8_t pcd8544_buffer[LCDWIDTH * LCDHEIGHT / 8] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFC, 0xFE, 0xFF, 0xFC, 0xE0,
@@ -192,35 +189,35 @@ void PCD8544::write(uint8_t c) {
   }
 }
 
-void PCD8544::print(const uint8_t *str) {
-  // C++ monstousity to convert const to non-const
-  const char *c = reinterpret_cast<char*>(const_cast<uint8_t*>(str));
-  size_t n = std::strlen(c);
-  for(int i=0; i<n; i++) write(*(c+i));
+void PCD8544::print(const uint8_t *str){
+  size_t n = std::strlen(reinterpret_cast<const char*>(str));
+  for(int i=0; i<n; i++) write(*(str+i));
 }
 
-void PCD8544::print(const char *str, int x, int y) {
+void PCD8544::print(const uint8_t *str, int x, int y) {
   this->setCursor(x, y);
   print(str);
 }
 
-
-void PCD8544::print(const char *str) {
-  print( const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(str)));
+void PCD8544::print(const uint32_t n) {
+  uint8_t buffer[11] = {0}; // 2^32 is a number with 10 digits
+  snprintf(reinterpret_cast<char*>(buffer), 10, "%u", n);
+  print(buffer);
 }
+
 
 void PCD8544::println(const uint8_t *str) {
 
   // `str' can never be null. if it ever is, fix it elsewhere
 
   static const char c[] = "\r\n";
-  const size_t n = std::strlen(reinterpret_cast<char*>(const_cast<uint8_t*>(str)));
+  const size_t n = std::strlen(reinterpret_cast<const char*>(str));
   std::memset(println_buffer, 0, n + 2); // '2' for std::strlen(c)
 
   std::memcpy(println_buffer, str, n);
   std::memcpy(println_buffer + n, c, 2);
   
-  print(const_cast<char*>(println_buffer));
+  print(println_buffer);
 }
 
 void PCD8544::setCursor(uint8_t x, uint8_t y){

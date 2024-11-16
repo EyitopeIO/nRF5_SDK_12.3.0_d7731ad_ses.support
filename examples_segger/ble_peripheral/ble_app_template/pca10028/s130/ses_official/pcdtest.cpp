@@ -13,7 +13,6 @@
 #define LOGO16_GLCD_HEIGHT 16
 #define LOGO16_GLCD_WIDTH  16
 
-
 void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h);
 void testdrawchar(void);
 void testdrawcircle(void);
@@ -68,7 +67,8 @@ void adafruit_test( void ) {
 
   // draw a string at location (0,0)
   nokia.setCursor(0, 0);
-  nokia.print("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor");
+  uint8_t lorem[] = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor";
+  nokia.print(lorem);
   nokia.display();
   delay(200);
   nokia.clear();

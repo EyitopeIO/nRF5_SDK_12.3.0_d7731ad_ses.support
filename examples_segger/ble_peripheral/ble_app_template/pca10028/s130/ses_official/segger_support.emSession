@@ -78,20 +78,20 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="10" y="9" useTextEdit="1" path="common.h" left="0" top="5" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="view_control.h" left="0" top="10" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="25" useTextEdit="1" path="main.cpp" left="0" selected="1" top="22" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="19" y="233" useTextEdit="1" folds0="176,192" path="nordic.c" left="0" top="143" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="10" y="9" useTextEdit="1" path="common.h" left="0" top="1" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="view_control.h" left="0" top="1" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="20" y="53" useTextEdit="1" path="main.cpp" left="0" selected="1" top="29" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="19" y="233" useTextEdit="1" folds0="176,192" path="nordic.c" left="0" top="197" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="32" y="85" useTextEdit="1" folds0="156,171" path="view_control.cpp" left="0" top="60" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="166" useTextEdit="1" path="../../../../../../components/drivers_nrf/delay/nrf_delay.h" left="0" top="150" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="140" useTextEdit="1" path="../../../../../../components/libraries/util/app_error.c" left="0" top="116" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="46" useTextEdit="1" path="adafruit_control.cpp" left="0" top="3" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="140" useTextEdit="1" path="../../../../../../components/libraries/util/app_error.c" left="0" top="110" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="46" useTextEdit="1" path="adafruit_control.cpp" left="0" top="10" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="5" y="533" useTextEdit="1" path="PCD8544.cpp" left="0" top="500" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="102" useTextEdit="1" path="witmotion_control.c" left="0" top="18" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="4" y="78" useTextEdit="1" path="witmotion_control.c" left="0" top="78" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="631" useTextEdit="1" path="../../../../../../components/drivers_nrf/hal/nrf_gpio.h" left="0" top="618" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="17" y="21" useTextEdit="1" path="witmotion_control.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="134" useTextEdit="1" path="wit_c_sdk.h" left="0" top="108" codecName="Default"/>
-  <SessionOpenFile windowGroup="HUD {254cddb9-5e56-4955-bae2-79688a2f31bf} Middle" x="14" y="12" useTextEdit="1" folds0="148,154" path="wit_c_sdk.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="134" useTextEdit="1" path="wit_c_sdk.h" left="0" top="104" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="69" y="182" useTextEdit="1" folds0="148,154" path="wit_c_sdk.c" left="0" top="146" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="segger_support" fileDialogDefaultFilter="*.c" autoConnectTarget="GDB Server" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/components/libraries/fifo" debugSearchPath="" autoConnectCapabilities="1343"/>
 </session>

@@ -49,6 +49,15 @@
  */
 
 #include "nordic.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include "ble_advdata.h"
+#include "softdevice_handler.h"
+#include "bsp.h"
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
+#include "app_timer.h"
+
 
 #define CENTRAL_LINK_COUNT              0                                 /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT           0                                 /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
@@ -71,9 +80,6 @@
                                         0xcd, 0xde, 0xef, 0xf0            /**< Proprietary UUID for Beacon. */
 
 #define DEAD_BEEF                       0xDEADBEEF                        /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
-
-#define APP_TIMER_PRESCALER             0                                 /**< Value of the RTC1 PRESCALER register. */
-#define APP_TIMER_OP_QUEUE_SIZE         4                                 /**< Size of timer operation queues. */
 
 #if defined(USE_UICR_FOR_MAJ_MIN_VALUES)
 #define MAJ_VAL_OFFSET_IN_BEACON_INFO   18                                /**< Position of the MSB of the Major Value in m_beacon_info array. */
@@ -213,25 +219,21 @@ static void ble_stack_init(void)
 }
 
 
-void board_begin(void (*push_btn_handler)(bsp_event_t event))
+static void push_btn_handler(bsp_event_t event)
 {
-   uint32_t err_code;
-    // Initialize.
-    err_code = NRF_LOG_INIT(NULL);
-    APP_ERROR_CHECK(err_code);
+  (void)0;
+}
 
-
-    /* fRTC [kHz] = 32.768 / (PRESCALER + 1 )
-     * nrf51822 has 2 RTC's.
-     */
-    APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, NULL);
+void board_begin(void)
+{
+    uint32_t err_code;
 
     /*
      * Results in 3276 ticks per millisecond for the application/OS/SoftDevice,
      * by my calculations. Follow the defines to know how it was calculated. I
      * may be wrong.
      */
-    err_code = bsp_init(BSP_INIT_LED, APP_TIMER_TICKS(100, APP_TIMER_PRESCALER), push_btn_handler);
+    err_code = bsp_init(BSP_INIT_LED, APP_TIMER_TICKS(100,0), push_btn_handler);
     APP_ERROR_CHECK(err_code);
 
     ble_stack_init();

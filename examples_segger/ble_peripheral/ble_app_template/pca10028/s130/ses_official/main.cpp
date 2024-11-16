@@ -1,65 +1,49 @@
-#include "peripherals.h"
-#include "view_control.h"
-#include "witmotion_control.h"
 #include "adafruit_control.h"
 #include "nrf_log_ctrl.h"
 #include "app_error.h"
+#include "app_scheduler.h"
+#include "ser_conn_handlers.h"
+#include "app_timer_appsh.h"
 #include "nordic.h"
 #include "Arduino.h"
-#include "common.h"
 
+#define APP_SCHED_QUEUE_SIZE 8
 
-
-extern "C" void main_loop_forever( void );
-extern void push_button_handler(bsp_event_t event);
-
-
-void main_loop_forever( void )
-{
-
-  for (;;)
-  {
-    if (NRF_LOG_PROCESS() == false)
-    {
-        uint32_t err_code = sd_app_evt_wait();
-        APP_ERROR_CHECK(err_code);
-    }
-    
-    wit_make_data_request(); 
-
-    /* There's inherent latency due to the bus speed and processing time. This delay 
-     * was from experimenting with the Windows application provided by WIT.
-     */
-    delay(WIT_TIME_TO_WAIT_FOR_DATA); 
-    
-    if (wit_check_data_ready() != WIT_REQ_SUCCESS) {
-      set_next_page_to_error_page();
-    } else {
-      wit_read_data();
-    }
-
-    update_display_info();
-  }
-}
-
+#define APP_TIMER_PRESCALER             0
+#define APP_TIMER_OP_QUEUE_SIZE         8   // Enough for all timers used
 
 /**
  * @brief Function for application main entry.
  */
 int main( void )
 {
-    board_begin(push_button_handler);
+    uint32_t err_code;
 
-    pp_spi_init(); // todo: move to view_init()
+    err_code = NRF_LOG_INIT(NULL);
+    APP_ERROR_CHECK(err_code);
+
+    APP_SCHED_INIT(APP_TIMER_SCHED_EVT_SIZE, APP_SCHED_QUEUE_SIZE);
+
+    /* fRTC [kHz] = 32.768 / (PRESCALER + 1 )
+     * nrf51822 has 2 RTC's.
+     */
+    APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
+
+    /* Initialise the PCA10026 for its primary function as an advertiser */
+    board_begin();
+
+    /* Initialise the display */
     adafruit_init();
-    initialise_view();
 
-    witmotion_init( 1 );
-    main_loop_forever();
+    for (;;)
+    {
+      app_sched_execute();
+
+      if (NRF_LOG_PROCESS() == false)
+      {
+          uint32_t err_code = sd_app_evt_wait();
+          APP_ERROR_CHECK(err_code);
+      }
+    }
     return 0;
 }
-
-
-/**
- * @}
- */
