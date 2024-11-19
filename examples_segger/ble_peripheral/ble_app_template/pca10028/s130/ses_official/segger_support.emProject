@@ -62,14 +62,17 @@
       linker_printf_width_precision_supported="Yes"
       linker_scanf_fmt_level="long"
       linker_section_placement_file="../../../../../../components/toolchain/embedded_studio/flash_placement.xml"
-      linker_section_placement_macros="FLASH_START=0x1B000;SRAM_START=0x200019C8"
+      linker_section_placement_macros="FLASH_START=0x1B000;SRAM_START=0x20001EB0"
       linker_section_placements_segments="FLASH RX 0x00000000 0x00040000;RAM RWX 0x20000000 0x00004000"
       macros="CMSIS_CONFIG_TOOL=../../../../../../external_tools/cmsisconfig/CMSIS_Configuration_Wizard.jar"
       project_directory=""
       project_type="Executable"
       target_disconnect_script="TargetInterface.resetAndStop()"
       target_reset_script="TargetInterface.resetAndStop()" />
-    <configuration Name="Debug" debug_additional_load_file="" />
+    <configuration
+      Name="Debug"
+      c_preprocessor_definitions="DEBUG"
+      debug_additional_load_file="" />
     <configuration
       Name="Release"
       gcc_optimization_level="Optimize For Size" />
@@ -89,7 +92,11 @@
         <configuration Name="Debug" build_exclude_from_build="No" />
       </file>
       <file file_name="nordic.h" />
+      <file file_name="scanner.cpp" />
+      <file file_name="scanner.h" />
       <file file_name="sdk_config.h" />
+      <file file_name="view.h" />
+      <file file_name="views.cpp" />
     </folder>
     <folder Name="Board Definition">
       <file file_name="../../../../../../components/boards/boards.c" />

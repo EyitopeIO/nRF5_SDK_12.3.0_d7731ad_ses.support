@@ -53,15 +53,6 @@ static void spi_event_handler(nrf_drv_spi_evt_t const * p_event)
     spi_xfer_done = true;
 }
 
-static void refresh_display_timer_cb(void *p_context)
-{
-  UNUSED_PARAMETER(p_context);
-  static uint32_t n_refresh = 1;
-  nokia.print(n_refresh);
-  nokia.display();
-  n_refresh += 1;
-}
-
 static void pp_spi_init( void )
 {
     DISPLAY_BACKLIGHT_ON;
@@ -78,7 +69,6 @@ static void pp_spi_init( void )
 }
 
 
-
 void clear_screen(bool clear) {
   if (clear) {
     nokia.clear();
@@ -86,28 +76,16 @@ void clear_screen(bool clear) {
   }
 }
 
-void adafruit_init( void  )
-{
-  uint32_t err_code;
-
-  pp_spi_init();
-
-  adafruit_test();
-
-  err_code = app_timer_create(&m_refresh_display_timer_id, APP_TIMER_MODE_REPEATED, refresh_display_timer_cb);
-  APP_ERROR_CHECK(err_code);
-  err_code = app_timer_start(m_refresh_display_timer_id, APP_TIMER_TICKS(1000,0), NULL);
-  APP_ERROR_CHECK(err_code);
-}
-
 void adafruit_spiwrite (uint8_t c)
 {
   spi_write(&c, 1);
 }
 
-void adafruit_longwrite (uint8_t *c, uint16_t len)
+void adafruit_print(uint32_t n, bool clear)
 {
-  spi_write(c, len);
+  clear_screen(clear);
+  nokia.print(n);
+  nokia.display();
 }
 
 void adafruit_print(const uint8_t *c, uint16_t len, int x, int y, bool clear)
@@ -127,4 +105,33 @@ void adafruit_print(uint8_t c, bool clear)
 {
   clear_screen(clear);
   app_uart_put(c);
+}
+
+bool adafruit_busy(void)
+{
+  return spi_xfer_done ? true : false;
+}
+
+static void refresh_display_timer_cb(void *p_context)
+{
+  if (adafruit_busy())
+    return;
+  UNUSED_PARAMETER(p_context);
+  static uint32_t n_refresh = 1;
+  adafruit_print(n_refresh);
+  n_refresh += 1;
+}
+
+void adafruit_init( void  )
+{
+  uint32_t err_code;
+
+  pp_spi_init();
+
+  adafruit_test();
+
+  err_code = app_timer_create(&m_refresh_display_timer_id, APP_TIMER_MODE_REPEATED, refresh_display_timer_cb);
+  APP_ERROR_CHECK(err_code);
+  //err_code = app_timer_start(m_refresh_display_timer_id, APP_TIMER_TICKS(1000,0), nullptr);
+  //APP_ERROR_CHECK(err_code);
 }

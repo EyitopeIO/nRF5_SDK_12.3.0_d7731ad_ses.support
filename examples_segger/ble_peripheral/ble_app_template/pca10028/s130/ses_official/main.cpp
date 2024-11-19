@@ -1,16 +1,35 @@
 #include "adafruit_control.h"
 #include "nrf_log_ctrl.h"
+#include "nrf_soc.h"
 #include "app_error.h"
 #include "app_scheduler.h"
-#include "ser_conn_handlers.h"
 #include "app_timer_appsh.h"
 #include "nordic.h"
-#include "Arduino.h"
+#include "scanner.h"
+#include "bsp.h"
+#include "view.h"
 
-#define APP_SCHED_QUEUE_SIZE 8
+#define APP_SCHED_QUEUE_SIZE 16
 
 #define APP_TIMER_PRESCALER             0
 #define APP_TIMER_OP_QUEUE_SIZE         8   // Enough for all timers used
+
+
+extern "C" void push_btn_handler(bsp_event_t event)
+{
+  switch(event)
+  {
+    case BSP_EVENT_KEY_0:
+      app_sched_event_put(nullptr, 0, begin_scan);
+      break;
+    case BSP_EVENT_KEY_1:
+      app_sched_event_put(nullptr, 0, begin_scan);
+      break;
+    default:
+      break;
+  }
+}
+
 
 /**
  * @brief Function for application main entry.
@@ -29,11 +48,17 @@ int main( void )
      */
     APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
 
-    /* Initialise the PCA10026 for its primary function as an advertiser */
-    board_begin();
 
     /* Initialise the display */
     adafruit_init();
+
+    static_pages_init();
+
+    /* Initialise the PCA10026 for its primary function as an advertiser */
+    board_begin();
+
+    /* Initialise the added BLE functionality as a scanner */
+    scanner_init();
 
     for (;;)
     {

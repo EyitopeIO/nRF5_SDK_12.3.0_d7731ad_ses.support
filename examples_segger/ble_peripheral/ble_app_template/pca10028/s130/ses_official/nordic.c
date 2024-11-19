@@ -57,15 +57,13 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "app_timer.h"
+#include "view.h"
 
-
-#define CENTRAL_LINK_COUNT              0                                 /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
-#define PERIPHERAL_LINK_COUNT           0                                 /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT 0                                 /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
 #define APP_CFG_NON_CONN_ADV_TIMEOUT    0                                 /**< Time for which the device must be advertising in non-connectable mode (in seconds). 0 disables timeout. */
-#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(100, UNIT_0_625_MS) /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
+#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(1000, UNIT_0_625_MS) /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
 #define APP_BEACON_INFO_LENGTH          0x17                              /**< Total length of information advertised by the Beacon. */
 #define APP_ADV_DATA_LENGTH             0x15                              /**< Length of manufacturer specific data in the advertisement. */
@@ -121,8 +119,11 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(void)
+void advertising_init(void *p_event_data, uint16_t event_size)
 {
+    UNUSED_PARAMETER(p_event_data);
+    UNUSED_PARAMETER(event_size);
+
     uint32_t      err_code;
     ble_advdata_t advdata;
     uint8_t       flags = BLE_GAP_ADV_FLAG_BR_EDR_NOT_SUPPORTED;
@@ -177,10 +178,11 @@ static void advertising_init(void)
 }
 
 
-/**@brief Function for starting advertising.
- */
-static void advertising_start(void)
+void advertising_start(void *p_event_data, uint16_t event_size)
 {
+    UNUSED_PARAMETER(p_event_data);
+    UNUSED_PARAMETER(event_size);
+
     uint32_t err_code;
 
     err_code = sd_ble_gap_adv_start(&m_adv_params);
@@ -188,6 +190,8 @@ static void advertising_start(void)
 
     err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING);
     APP_ERROR_CHECK(err_code);
+
+    goto_page(PAGE_ADVERTISING, NULL);
 }
 
 
@@ -219,10 +223,7 @@ static void ble_stack_init(void)
 }
 
 
-static void push_btn_handler(bsp_event_t event)
-{
-  (void)0;
-}
+extern void push_btn_handler(bsp_event_t event);
 
 void board_begin(void)
 {
@@ -237,10 +238,9 @@ void board_begin(void)
     APP_ERROR_CHECK(err_code);
 
     ble_stack_init();
-    advertising_init();
+    advertising_init(NULL, 0);
 
     // Start execution.
     NRF_LOG_INFO("BLE Beacon started\r\n");
-    advertising_start();
-
+    advertising_start(NULL, 0);
 }

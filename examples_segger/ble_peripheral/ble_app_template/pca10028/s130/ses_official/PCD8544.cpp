@@ -81,7 +81,6 @@ static uint8_t xUpdateMin, xUpdateMax, yUpdateMin, yUpdateMax;
 #endif
 
 
-
 static void updateBoundingBox(uint8_t xmin, uint8_t ymin, uint8_t xmax, uint8_t ymax) {
 #ifdef enablePartialUpdate
   if (xmin < xUpdateMin) xUpdateMin = xmin;
@@ -113,7 +112,6 @@ PCD8544::PCD8544(int8_t SCLK, int8_t DIN, int8_t DC, int8_t RST) {
   cursor_x = cursor_y = 0;
   textsize = 1;
   textcolor = BLACK;
-
 }
 
 void PCD8544::drawbitmap(uint8_t x, uint8_t y,
