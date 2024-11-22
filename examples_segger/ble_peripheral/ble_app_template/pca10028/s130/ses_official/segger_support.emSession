@@ -11,7 +11,7 @@
  <Memory1>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="ble_app_template_pca10028_s130" sizeText="" addressText=""/>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="segger_support" sizeText="" addressText=""/>
-  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="segger_support_Debug" sizeText="" addressText="0x0"/>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="segger_support_Debug" sizeText="sizeof(n_devices_seen)" addressText="&amp;n_devices_seen"/>
  </Memory1>
  <Memory2>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="ble_app_template_pca10028_s130" sizeText="" addressText=""/>
@@ -33,7 +33,6 @@
   <ProjectSessionItem path="segger_support;segger_support"/>
   <ProjectSessionItem path="segger_support;segger_support;Application"/>
   <ProjectSessionItem path="segger_support;segger_support;Application;adafruit"/>
-  <ProjectSessionItem path="segger_support;segger_support;Application;witmotion"/>
   <ProjectSessionItem path="segger_support;segger_support;Board Definition"/>
   <ProjectSessionItem path="segger_support;segger_support;Board Support"/>
   <ProjectSessionItem path="segger_support;segger_support;nRF_Libraries"/>
@@ -78,20 +77,18 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="10" y="9" useTextEdit="1" path="common.h" left="0" top="1" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="view_control.h" left="0" top="1" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="20" y="53" useTextEdit="1" path="main.cpp" left="0" selected="1" top="29" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="19" y="233" useTextEdit="1" folds0="176,192" path="nordic.c" left="0" top="197" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="32" y="85" useTextEdit="1" folds0="156,171" path="view_control.cpp" left="0" top="60" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="166" useTextEdit="1" path="../../../../../../components/drivers_nrf/delay/nrf_delay.h" left="0" top="150" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="140" useTextEdit="1" path="../../../../../../components/libraries/util/app_error.c" left="0" top="110" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="46" useTextEdit="1" path="adafruit_control.cpp" left="0" top="10" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="533" useTextEdit="1" path="PCD8544.cpp" left="0" top="500" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="4" y="78" useTextEdit="1" path="witmotion_control.c" left="0" top="78" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="631" useTextEdit="1" path="../../../../../../components/drivers_nrf/hal/nrf_gpio.h" left="0" top="618" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="21" useTextEdit="1" path="witmotion_control.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="134" useTextEdit="1" path="wit_c_sdk.h" left="0" top="104" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="69" y="182" useTextEdit="1" folds0="148,154" path="wit_c_sdk.c" left="0" top="146" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="7" useTextEdit="1" path="common.h" left="0" top="1" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="155" useTextEdit="1" folds0="119,128,139,145,151,157" path="adafruit_control.cpp" left="0" top="91" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="40" y="88" useTextEdit="1" path="adafruit_control.h" left="0" top="57" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="42" y="35" useTextEdit="1" folds0="24,50,82,111" path="scanner.cpp" left="0" selected="1" top="25" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="13" y="17" useTextEdit="1" path="scanner.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="443" useTextEdit="1" path="../../../../../../components/softdevice/s130/headers/ble_gap.h" left="0" top="422" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="56" useTextEdit="1" folds0="40,81,93,105,144,151,160,165" path="views.cpp" left="0" top="30" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="42" y="38" useTextEdit="1" path="view.h" left="0" top="20" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="main.cpp" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="75" useTextEdit="1" path="../../../../../../components/libraries/util/app_error.c" left="0" top="51" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="360" useTextEdit="1" path="../../../../../../components/libraries/timer/app_timer.c" left="0" top="396" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="37" y="193" useTextEdit="1" path="nordic.c" left="0" top="164" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="segger_support" fileDialogDefaultFilter="*.c" autoConnectTarget="GDB Server" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/eyi/Projects/nRF5_SDK_12.3.0_d7731ad_ses.support/components/libraries/fifo" debugSearchPath="" autoConnectCapabilities="1343"/>
 </session>

@@ -9,10 +9,10 @@
 #include "bsp.h"
 #include "view.h"
 
-#define APP_SCHED_QUEUE_SIZE 16
+#define APP_SCHED_QUEUE_SIZE 32
 
 #define APP_TIMER_PRESCALER             0
-#define APP_TIMER_OP_QUEUE_SIZE         8   // Enough for all timers used
+#define APP_TIMER_OP_QUEUE_SIZE         32   // Enough for all timers used
 
 
 extern "C" void push_btn_handler(bsp_event_t event)
@@ -47,7 +47,6 @@ int main( void )
      * nrf51822 has 2 RTC's.
      */
     APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
-
 
     /* Initialise the display */
     adafruit_init();

@@ -29,10 +29,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "PCD8544.h"
 #include "adafruit_control.h"
 
-static uint8_t println_buffer[LCDWIDTH * LCDHEIGHT / 8] = {0};
-
 // a 5x7 font table
 extern uint8_t font[];
+
 
 // the memory buffer for the LCD
 static uint8_t pcd8544_buffer[LCDWIDTH * LCDHEIGHT / 8] = {
@@ -203,20 +202,6 @@ void PCD8544::print(const uint32_t n) {
   print(buffer);
 }
 
-
-void PCD8544::println(const uint8_t *str) {
-
-  // `str' can never be null. if it ever is, fix it elsewhere
-
-  static const char c[] = "\r\n";
-  const size_t n = std::strlen(reinterpret_cast<const char*>(str));
-  std::memset(println_buffer, 0, n + 2); // '2' for std::strlen(c)
-
-  std::memcpy(println_buffer, str, n);
-  std::memcpy(println_buffer + n, c, 2);
-  
-  print(println_buffer);
-}
 
 void PCD8544::setCursor(uint8_t x, uint8_t y){
   cursor_x = x;

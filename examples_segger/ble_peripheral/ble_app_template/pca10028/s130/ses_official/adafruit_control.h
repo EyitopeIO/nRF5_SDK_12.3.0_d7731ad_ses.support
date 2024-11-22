@@ -3,6 +3,10 @@
 
 #include <cstdint>
 
+#define MAX_CHAR_WIDTH          14    // counted characters to fill display at the current font
+#define MAX_CHAR_HEIGHT         6     // LCDHEIGHT / 8
+#define USER_BUFFER_LEN         MAX_CHAR_WIDTH * MAX_CHAR_HEIGHT
+
 /**
  * @brief Clear the screen
  * 
@@ -69,6 +73,21 @@ void adafruit_print(const uint8_t *c, uint16_t len, int x, int y, bool clear = f
  * @param n The number to print
  */
 void adafruit_print(uint32_t n, bool clear = true);
+
+/**
+ * @brief Clear the display buffer and return its address
+ */
+uint8_t* adafruit_get_cleared_buffer(void);
+
+/**
+ * @brief Start the display refresh timer
+ */
+void adafruit_start_refresh_timer(void);
+
+/**
+ * @brief Stop the display refresh timer
+ */
+void adafruit_stop_refresh_timer(void);
 
 
 #endif

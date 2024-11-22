@@ -1,6 +1,7 @@
 
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 #include "view.h"
 #include "adafruit_control.h"
 #include "scanner.h"
@@ -8,7 +9,8 @@
 #include "app_scheduler.h"
 
 
-#define V_SCANNING_L  28  // 23 + two digits + 's' + miscellaneous
+
+#define V_SCANNING_L  23
 static uint8_t v_scanning[V_SCANNING_L] = {0};
 
 static const uint8_t v_scan_failed[] = "Scan\nfailed\nto start";
@@ -17,24 +19,86 @@ static const uint8_t v_scan_finished[] = "Scan\nfinished\n";
 static const uint8_t v_advertiser_stopping[] = "Stopping advertisment...\r\n";
 static const uint8_t v_advertiser_running[] = "Advertising...\r\n";
 static const uint8_t v_null_page[] = "Lolz...\nNull page\r\n";
+static const char v_advertisements[] = "%02X%02X%02X%02X%02X%02X\ns:%d\r\n\n";
 
 static volatile bool v_is_changing_page = 0;
+static page_t v_current_page;
 
-/**
- * @brief Page data structure
- * 
- * @details To change the page, you specify the page to change to and the data to be displayed on that page when
- *          @ref goto_page is called. This structure is used to pass the page and the data to the application scheduler,
- *          which will then call the function to change the page.
- */
-typedef struct {
-  page_t page;
-  void *p_data;
-} page_data_t;
 
 void static_pages_init(void)
 {
-  std::snprintf(reinterpret_cast<char*>(v_scanning), V_SCANNING_L, "Scanning...\nTimeout: %us", SCAN_TIMEOUT);
+  std::snprintf(reinterpret_cast<char*>(v_scanning), V_SCANNING_L, "Scanning for\n%us...", SCAN_TIMEOUT);
+}
+
+/**
+ * @brief Format a buffer to print on PAGE_SCAN_RESPONSES 
+ */
+static void do_page_scan_responses(void) {
+  ble_gap_evt_adv_report_t *report;
+  uint8_t* buffer = adafruit_get_cleared_buffer();
+  uint8_t count = 0;
+  
+  if (n_advertisements_seen) {
+    report = &advertisement_reports[FIRST_ON_LIST];
+    count = std::snprintf(
+      reinterpret_cast<char*>(buffer),
+      BLE_GAP_ADV_MAX_SIZE + 4,   // 4 for the rssi including the negative sign
+      v_advertisements, 
+      report->peer_addr.addr[0],
+      report->peer_addr.addr[1],
+      report->peer_addr.addr[2],
+      report->peer_addr.addr[3],
+      report->peer_addr.addr[4],
+      report->peer_addr.addr[5],
+      report->rssi
+    );
+
+    report = &advertisement_reports[SECOND_ON_LIST];
+    if (report->rssi != 0) {
+      std::snprintf(
+        reinterpret_cast<char*>(buffer + count - 1),
+        BLE_GAP_ADV_MAX_SIZE + 4,
+        v_advertisements, 
+        report->peer_addr.addr[0],
+        report->peer_addr.addr[1],
+        report->peer_addr.addr[2],
+        report->peer_addr.addr[3],
+        report->peer_addr.addr[4],
+        report->peer_addr.addr[5],
+        report->rssi
+      );
+    }
+  }
+  adafruit_print(buffer);
+}
+
+void refresh_display_timer_cb(void *p_context)
+{
+  switch(v_current_page)
+  {
+    case PAGE_SCAN_RESPONSES:
+      do_page_scan_responses();
+      break;
+
+    default:
+      break;
+  }
+}
+
+/**
+ * @brief Callback for all page exit events. See also @ref on_page_entry_cb
+ */
+static void on_page_exit_cb(void)
+{
+  switch(v_current_page)
+  {
+    case PAGE_SCAN_RESPONSES:
+      adafruit_stop_refresh_timer();
+      break;
+
+    default:
+      break;
+  }
 }
 
 /**
@@ -48,13 +112,12 @@ void static_pages_init(void)
  * @param p_event_data Pointer to the event data. This is a @ref page_data_t
  * @param event_size Size of the event data
  */
-static void do_goto_page(void *p_event_data, uint16_t event_size)
+static void on_static_page_entry(void *p_event_data, uint16_t event_size)
 {
-  page_data_t *p_data = reinterpret_cast<page_data_t*>(p_event_data);
-  page_t page = p_data->page;
-
+  page_t* tmp = reinterpret_cast<page_t*>(p_event_data);
   v_is_changing_page = 1;
-  switch(page)
+
+  switch(*tmp)
   {
     case PAGE_NULL:
       adafruit_print(v_null_page);
@@ -68,10 +131,9 @@ static void do_goto_page(void *p_event_data, uint16_t event_size)
     case PAGE_SCAN_FAILED:
       adafruit_print(v_scan_failed);
       break;
-  
-    case PAGE_SCAN_FINISHED:
+
+    case PAGE_SCAN_FINISHED:  // This page may not be displayed long enough for you to see it.
       adafruit_print(v_scan_finished);
-      // nrf_delay_ms(1000);
       break;
   
     case PAGE_ADVERTISEMENT_STOPPING:
@@ -85,18 +147,32 @@ static void do_goto_page(void *p_event_data, uint16_t event_size)
     default:
       break;
   }
+  v_current_page = *tmp;
   v_is_changing_page = 0;
 }
 
-void goto_page(const page_t page, void *p_page_data)
+void goto_static_page(const page_t page)
 {
-  page_data_t pd = { .page = page, .p_data = p_page_data };
-  app_sched_event_put(&pd, static_cast<uint16_t>(sizeof(pd)), do_goto_page);
+  page_t pg = page;
+  on_page_exit_cb();
+  app_sched_event_put(&pg, sizeof(pg), on_static_page_entry);
 }
 
+void goto_dynamic_page(const page_t page)
+{
+  on_page_exit_cb();
+  v_current_page = page;
+
+  /* From here on, the page will now be refreshed by the timer callback */
+  adafruit_start_refresh_timer();
+}
+
+page_t get_current_page(void)
+{
+  return v_current_page;
+}
 
 bool view_is_occupied(void)
 {
   return (adafruit_busy() || v_is_changing_page) ? true : false;
 }
-

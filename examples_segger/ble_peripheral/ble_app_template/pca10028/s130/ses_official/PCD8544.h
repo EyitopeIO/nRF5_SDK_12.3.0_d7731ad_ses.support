@@ -90,7 +90,6 @@ class PCD8544 {
   void print(const uint8_t *str);
   void print(const uint32_t n);
   void print(const uint8_t *str, int x, int y);
-  void println(const uint8_t *str);
 
   void drawchar(uint8_t x, uint8_t line, char c);
   void drawstring(uint8_t x, uint8_t line, char *c);

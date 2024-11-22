@@ -16,22 +16,26 @@ typedef enum {
   PAGE_SCAN_BEGIN = 2,
   PAGE_SCAN_FAILED,
   PAGE_SCAN_FINISHED,
+  PAGE_SCAN_RESPONSES,
+  PAGE_SCAN_WAITING_FOR_FIRST,
   PAGE_ADVERTISEMENT_STOPPING,
-  PAGE_ADVERTISING
+  PAGE_ADVERTISING,
 } page_t;
 
 /**
- * @brief Switch to a given page on the display
+ * @brief Switch to a page with static content on the display
  * 
- * @note This actually schedules the page change and doesn't change immediately.
+ * @details This actually schedules the page change and doesn't change immediately. The page will change in the
+ *          next iteration of the main loop i.e. the application context.
  *
  * @param page The page to switch to.
- * @param p_page_data  Pointer to arbitrary data used to update changing values on the page
- *                     For each page, the function treats the data differently. The caller is
- *                     responsible for making sure that the page data is valid. When you change
- *                     the page, @ref view_is_occupied returns true until the function returns.
  */
-void goto_page(const page_t page, void *p_page_data);
+void goto_static_page(const page_t page);
+
+/**
+ * @brief Switch to a page with dynamic content on the display
+ */
+void goto_dynamic_page(const page_t page);
 
 /**
  * @brief Check if the display is busy
@@ -41,9 +45,24 @@ void goto_page(const page_t page, void *p_page_data);
 bool view_is_occupied(void);
 
 /**
+ * @brief Returns the current page the display is showing
+ */
+page_t get_current_page(void);
+
+/**
  * @brief Initialise all static pages
  */
 void static_pages_init(void);
+
+/**
+ * @brief Display refresh timer callback
+ * 
+ * @details When we are on a dynamic, a timer ticks every second to refresh the display.
+ *          After each tick, the display is updated using this callback. This is where you
+ *          add logic to update the content of your dynamic page. Avoid long running operations.
+ */
+void refresh_display_timer_cb(void *p_context);
+
 
 #ifdef __cplusplus
 }

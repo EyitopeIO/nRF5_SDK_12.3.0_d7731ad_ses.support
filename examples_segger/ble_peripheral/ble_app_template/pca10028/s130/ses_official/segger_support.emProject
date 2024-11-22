@@ -13,7 +13,7 @@
   <project Name="segger_support">
     <configuration
       CMSIS_CORE="Yes"
-      LIBRARY_HEAP_TYPE="Real-Time"
+      LIBRARY_HEAP_TYPE="Basic"
       LIBRARY_IO_TYPE="RTT"
       Name="Common"
       WARNING_LEVEL="2 (Standard)"
@@ -22,7 +22,7 @@
       arm_endian="Little"
       arm_fp_abi="Soft"
       arm_fpu_type="None"
-      arm_library_optimization="Small"
+      arm_library_optimization="Balanced"
       arm_linker_heap_size="4888"
       arm_linker_process_stack_size="0"
       arm_linker_stack_size="4888"
@@ -86,7 +86,6 @@
       </folder>
       <file file_name="adafruit_control.cpp" />
       <file file_name="adafruit_control.h" />
-      <file file_name="common.h" />
       <file file_name="main.cpp" />
       <file file_name="nordic.c">
         <configuration Name="Debug" build_exclude_from_build="No" />

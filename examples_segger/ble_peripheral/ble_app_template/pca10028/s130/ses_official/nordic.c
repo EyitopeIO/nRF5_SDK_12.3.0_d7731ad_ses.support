@@ -191,7 +191,7 @@ void advertising_start(void *p_event_data, uint16_t event_size)
     err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING);
     APP_ERROR_CHECK(err_code);
 
-    goto_page(PAGE_ADVERTISING, NULL);
+    goto_static_page(PAGE_ADVERTISING);
 }
 
 
