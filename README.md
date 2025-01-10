@@ -20,24 +20,26 @@ directly created at SES (without import keil project).
 Following lines changed as above according to "https://devzone.nordicsemi.com/f/nordic-q-a/23232/hardfault_handler-for-segger-embedded-studio".
 
 
-# Introduction to this repo
-Odometre is the nick name given to this project. It is basically an attitude
-(orientation) indicator intended for a bicycle. It uses nRF5 SDK v12.3.0, but
-Nordic Semiconductor has since discontinued this SDK and has moved to using
-the [Zephyr project](https://www.zephyrproject.org/).
+# Purpose of this repo
+
+This project started as an attitude indicator for my bicycle because I had an
+IMU sensor lying around. It was meant to present my acceleration, orientation
+and other stats for me on a display. I gave up on this because the sensor was
+grossly inconvenient to use. So the project's scope change to become a BLE
+scanner. The project uses nRF5 SDK v12.3.0, but Nordic Semiconductor has since
+discontinued this SDK and has moved to using the [Zephyr project](https://www.zephyrproject.org/).
+
+I may consider porting to Zephyr later. The goal was to familiarise myself with
+the Bluetooth protocol stack.
 
 Because v12.3.0 was the last stable release for the board (PCA20006) used in
 this project, it made sense to start from that release instead of attempting
 to make the Zephyr project support the discontinued PCA20006 board.
 
+The system listen to advertising BLE devices and prints MAC address and RSSI of
+the top two devices with the highest RSSI.
 
-# What Odometre does
-Read data from an inertial measurement unit (IMU) and put that up on a Nokia
-5110 display. There are two buttons on the board and pressing a button either
-takes you to the next page of information or to the previous.
-
-
-**When I this document refers to the 'source directory', assume the path below
+**When this document refers to the 'source directory', assume the path below
 `nRF5_SDK_12.3.0_d7731ad_ses.support/examples_segger/ble_peripheral/ble_app_template/pca10028/s130/ses_official`
 
 
